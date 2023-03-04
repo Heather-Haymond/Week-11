@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Tic Tac Toe</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1>Tic Tac Toe</h1>
+	<p id="turn">It's X's turn</p>
+	<table id="game">
+		<tr>
+			<td id="0"><button onclick="handleCellClick(0)" id="btn0">[ ]</button></td>
+			<td id="1"><button onclick="handleCellClick(1)" id="btn1">[ ]</button></td>
+			<td id="2"><button onclick="handleCellClick(2)" id="btn2">[ ]</button></td>
+		</tr>
+		<tr>
+			<td id="3"><button onclick="handleCellClick(3)" id="btn3">[ ]</button></td>
+			<td id="4"><button onclick="handleCellClick(4)" id="btn4">[ ]</button></td>
+			<td id="5"><button onclick="handleCellClick(5)" id="btn5">[ ]</button></td>
+		</tr>
+		<tr>
+			<td id="6"><button onclick="handleCellClick(6)" id="btn6">[ ]</button></td>
+			<td id="7"><button onclick="handleCellClick(7)" id="btn7">[ ]</button></td>
+			<td id="8"><button onclick="handleCellClick(8)" id="btn8">[ ]</button></td>
+		</tr>
+	</table>
+	<button onclick="Clear()" id="restart">Restart Game</button>
+	<script>
+		const gameBoard = ['', '', '', '', '', '', '', '', ''];
+		let playerTurn = 'X';
+		let foundWinner = false;
+		function handleCellClick(cellName) {
+			const button = document.getElementById('btn'+cellName);
+			if (foundWinner == false &&
+				gameBoard[cellName] !== 'X' && gameBoard[cellName] !== 'O')  {
+				gameBoard[cellName] = playerTurn;
+				button.innerText = playerTurn;
+				if (playerTurn == 'X') {
+					playerTurn = 'O';
+				} else {
+					playerTurn = 'X';
+				}
+				checkWinner();
+				const turnText = document.getElementById('turn');
+				turnText.innerText = "It's " + playerTurn + "'s turn";
+			}
+		}
+		function Clear() {
+			for ( let i = 0; i < gameBoard.length; i++) {
+				gameBoard[i] = '';
+				const button = document.getElementById('btn'+i);
+				button.innerText = '[ ]';
+			}
+			foundWinner = false;
+		}
+
+		function checkWinner() { 
+			console.log('insideCheckWinner');
+			const winningCombinations = [    [0, 1, 2],
+				[3, 4, 5],
+				[6, 7, 8],
+				[0, 3, 6],
+				[1, 4, 7],
+				[2, 5, 8],
+				[0, 4, 8],
+				[2, 4, 6],
+			];
+			for (let i = 0; i < winningCombinations.length; i++) {
+				const [a, b, c] = winningCombinations[i];
+				if (gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c]) {
+					if (gameBoard[a] == 'X' || gameBoard[c] == 'O') {
+						alert(`${gameBoard[a]} wins!`);
+						foundWinner = true;
+						return;
+					}
+				}
+			}
+		}
+
+	</script>
+</body>
+</html>

@@ -10,7 +10,7 @@
 </head>
 <body>
 	<h1>Tic Tac Toe</h1>
-	<p id="turn">It's X's turn</p>
+	<h2>It's X's turn</h2>
 	<table id="game">
 		<tr>
 			<td id="0"><button onclick="handleCellClick(0)" id="btn0">[ ]</button></td>
@@ -29,11 +29,32 @@
 		</tr>
 	</table>
 	<button onclick="Clear()" class="btn btn-primary" id="restart">Restart Game</button>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+	<div class="alert alert-success alert-dismissible fade show" role="alert" id="winnerAlert">
+		<strong>Success!</strong> Your message has been sent.
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="play-again"></button>
+	  </div>
+	  
+	<!--<div class="alert alert-success" role="alert" id="winnerAlert"> 
+		<span id="winner-message"></span>
+		<button type="button" class="btn btn-success" onclick="exitAlert()" id="play-again">Play Again</button>
+	  </div>	  -->
+	  
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
 	<script>
 		const gameBoard = ['', '', '', '', '', '', '', '', ''];
 		let playerTurn = 'X';
 		let foundWinner = false;
+		winnerAlert.style.display = 'none';
+		const playAgainButton = document.getElementById('play-again');
+		playAgainButton.addEventListener('click', function() {
+ 		 // Reset the game board here
+  		//resetGameBoard();
+
+  		// Hide the winner alert
+ 		 winnerAlert.style.display = 'none';
+		});
+
+
 		function handleCellClick(cellName) {
 			const button = document.getElementById('btn'+cellName);
 			if (foundWinner == false &&
@@ -49,7 +70,8 @@
 				const turnText = document.getElementById('turn');
 				turnText.innerText = "It's " + playerTurn + "'s turn";
 			}
-		}function Clear() {
+		}
+		function Clear() {
             for ( let i = 0; i < gameBoard.length; i++) {
                 gameBoard[i] = '';
                 const button = document.getElementById('btn'+i);
@@ -73,17 +95,33 @@
 				[0, 4, 8],
 				[2, 4, 6],
 			];
+			
 			for (let i = 0; i < winningCombinations.length; i++) {
 				const [a, b, c] = winningCombinations[i];
+				console.log('before calling winner alert');
+				const winnerAlert = document.getElementById('winnerAlert');
 				if (gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c]) {
-					if (gameBoard[a] == 'X' || gameBoard[c] == 'O') {
-						alert(`${gameBoard[a]} wins!`);
+					if (gameBoard[a] === 'X' || gameBoard[c] === 'O') {
+					//	winnerAlert.textContent = `${gameBoard[a]} wins!`;
+					//	winnerAlert.style.display = 'block';
+					//	const playAgainButton = document.querySelector('.btn-close');
+  					//	playAgainButton.style.display = 'block';
+						alert (`${gameBoard[a]} wins!`);
 						foundWinner = true;
 						return;
 					}
 				}
+
+
 			}
 		}
+		function exitAlert() {
+			console.log('inside exitAlert');
+			winnerAlert.style.display = 'none';
+		}
+
+// Add event listener to play again button
+//playAgainBtn.addEventListener('click', resetGame);
 
 	</script>
 </body>

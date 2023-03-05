@@ -4,13 +4,17 @@
 	<meta charset="UTF-8">
 	<title>Tic Tac Toe</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="tic-tac-toe.css">
-	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> 
+	<link rel="stylesheet" href="tic-tac-toe.css">  <!-- this will override other style sheets via the order-->
 
 </head>
 <body>
-	<h1>Tic Tac Toe</h1>
-	<h2>It's X's turn</h2>
+	<!-- this displays the title and and who's turn it is text-->
+	<div class="text-center">
+		<h1>Tic Tac Toe</h1>
+		<h2><p id="turn">It's X's turn</p></h2>
+	  </div>
+	  <!-- this is the table that shows the 9 button grid -->
 	<table id="game">
 		<tr>
 			<td id="0"><button onclick="handleCellClick(0)" id="btn0">[ ]</button></td>
@@ -28,50 +32,53 @@
 			<td id="8"><button onclick="handleCellClick(8)" id="btn8">[ ]</button></td>
 		</tr>
 	</table>
-	<button onclick="Clear()" class="btn btn-primary" id="restart">Restart Game</button>
+	<!--this is the restart button-->
+	<div class="text-center">
+		<button onclick="Clear()" class="btn btn-primary" id="restart">Restart Game</button>
+	  </div>	  
+	<!-- this is  a bootsrap alert window winnerAlert 
+	Make sure the HTML code is correct: Check that the button is properly nested inside the "div" element 
+	with the "alert-dismissible" and "fade" classes. Also, ensure that the "data-bs-dismiss" attribute is set
+	 to "alert" on the button.-->
+
 	<div class="alert alert-success alert-dismissible fade show" role="alert" id="winnerAlert">
 		<strong>Success!</strong> Your message has been sent.
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="play-again"></button>
 	  </div>
-	  
-	<!--<div class="alert alert-success" role="alert" id="winnerAlert"> 
-		<span id="winner-message"></span>
-		<button type="button" class="btn btn-success" onclick="exitAlert()" id="play-again">Play Again</button>
-	  </div>	  -->
-	  
+	  <!-- this is the start of javascript code -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
 	<script>
 		const gameBoard = ['', '', '', '', '', '', '', '', ''];
 		let playerTurn = 'X';
 		let foundWinner = false;
-		winnerAlert.style.display = 'none';
+		winnerAlert.style.display = 'none';		
+		
 		const playAgainButton = document.getElementById('play-again');
 		playAgainButton.addEventListener('click', function() {
- 		 // Reset the game board here
-  		//resetGameBoard();
-
-  		// Hide the winner alert
+ 		
+  		// Hide the winner alert... where my problems begin.
  		 winnerAlert.style.display = 'none';
 		});
 
-
+		// this is the function that is the button grid selection
 		function handleCellClick(cellName) {
 			const button = document.getElementById('btn'+cellName);
 			if (foundWinner == false &&
+				//if the button is not selected
 				gameBoard[cellName] !== 'X' && gameBoard[cellName] !== 'O')  {
-				gameBoard[cellName] = playerTurn;
-				button.innerText = playerTurn;
-				if (playerTurn == 'X') {
+				gameBoard[cellName] = playerTurn; //change value of button in memory
+				button.innerText = playerTurn; // changes value of button on screen
+				if (playerTurn == 'X') { //alternate plater turn logic
 					playerTurn = 'O';
 				} else {
 					playerTurn = 'X';
 				}
-				checkWinner();
+				checkWinner(); // check for winner
 				const turnText = document.getElementById('turn');
 				turnText.innerText = "It's " + playerTurn + "'s turn";
 			}
 		}
-		function Clear() {
+		function Clear() { // clear all memory and button value
             for ( let i = 0; i < gameBoard.length; i++) {
                 gameBoard[i] = '';
                 const button = document.getElementById('btn'+i);
@@ -83,7 +90,7 @@
         }
 
 
-		function checkWinner() { 
+		function checkWinner() { // all winning combos
 			console.log('insideCheckWinner');
 			const winningCombinations = [   
 				[0, 1, 2],
@@ -95,18 +102,22 @@
 				[0, 4, 8],
 				[2, 4, 6],
 			];
-			
+			// goes through each combo 
 			for (let i = 0; i < winningCombinations.length; i++) {
 				const [a, b, c] = winningCombinations[i];
 				console.log('before calling winner alert');
 				const winnerAlert = document.getElementById('winnerAlert');
+				//if the entire row matches
 				if (gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c]) {
 					if (gameBoard[a] === 'X' || gameBoard[c] === 'O') {
-					//	winnerAlert.textContent = `${gameBoard[a]} wins!`;
-					//	winnerAlert.style.display = 'block';
-					//	const playAgainButton = document.querySelector('.btn-close');
-  					//	playAgainButton.style.display = 'block';
-						alert (`${gameBoard[a]} wins!`);
+						// a winner is declared
+						winnerAlert.textContent = `${gameBoard[a]} wins!`;
+						console.log('found winner alert');
+						if (false) //TOGGLE ALTERNATE ALERT LOGIC
+							winnerAlert.style.display = 'block'; //turns on bootstrap alert
+						else 
+							alert (`${gameBoard[a]} wins!`); // use the standard alert 
+						console.log('turn on bootstrap alert');
 						foundWinner = true;
 						return;
 					}
@@ -120,8 +131,6 @@
 			winnerAlert.style.display = 'none';
 		}
 
-// Add event listener to play again button
-//playAgainBtn.addEventListener('click', resetGame);
 
 	</script>
 </body>
